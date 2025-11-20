@@ -1,0 +1,15 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Market | Zadiction',
+  description: 'Make your confidential prediction',
+};
+
+export default function MarketLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return children;
+}
+

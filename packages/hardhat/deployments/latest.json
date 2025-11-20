@@ -1,0 +1,8 @@
+{
+  "network": "sepolia",
+  "chainId": "11155111",
+  "factoryAddress": "0x3938AbB2b659bf7deEc102BF6A9725997e066931",
+  "owner": "0x2E35c2abd06d974e5a519eB66a415Ced302b991d",
+  "deployedAt": "2025-11-19T11:36:31.172Z",
+  "etherscanUrl": "https://sepolia.etherscan.io/address/0x3938AbB2b659bf7deEc102BF6A9725997e066931"
+}

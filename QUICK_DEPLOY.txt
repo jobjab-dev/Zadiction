@@ -1,0 +1,62 @@
+═══════════════════════════════════════════════════════════
+   ZADICTION - QUICK DEPLOY GUIDE
+═══════════════════════════════════════════════════════════
+
+📋 STEP 1: GET READY (2 min)
+───────────────────────────────────────────────────────────
+✅ Get Sepolia ETH: https://sepoliafaucet.com/
+✅ Get Infura Key: https://infura.io (free account)
+✅ Get Etherscan Key: https://etherscan.io/myapikey
+
+📋 STEP 2: SETUP ENV (1 min)
+───────────────────────────────────────────────────────────
+cd packages/hardhat
+nano .env
+
+Add these 3 lines:
+PRIVATE_KEY=0xYourPrivateKey
+SEPOLIA_RPC_URL=https://sepolia.infura.io/v3/YOUR_KEY
+ETHERSCAN_API_KEY=YourEtherscanKey
+
+📋 STEP 3: DEPLOY (2 min)
+───────────────────────────────────────────────────────────
+pnpm sepolia:deploy
+
+Will output:
+✅ Factory deployed at: 0x123...
+✅ Verified on Etherscan
+Copy the factory address!
+
+📋 STEP 4: FRONTEND (1 min)
+───────────────────────────────────────────────────────────
+cd packages/nextjs
+echo "NEXT_PUBLIC_FACTORY_ADDRESS=0x123..." > .env.local
+echo "NEXT_PUBLIC_NETWORK=sepolia" >> .env.local
+
+pnpm start
+
+📋 STEP 5: USE IT! (1 min)
+───────────────────────────────────────────────────────────
+✅ Go to: http://localhost:3000/admin/create
+✅ Create your first market via UI
+✅ Share /markets link with users
+✅ Done!
+
+═══════════════════════════════════════════════════════════
+   TOTAL TIME: ~7 MINUTES
+═══════════════════════════════════════════════════════════
+
+URLS:
+- Markets:  http://localhost:3000/markets
+- Create:   http://localhost:3000/admin/create
+- Docs:     http://localhost:3000/how-it-works
+
+COMMANDS:
+- Deploy:   pnpm sepolia:deploy
+- Start:    pnpm start
+- Build:    pnpm build
+
+NEED HELP?
+- Check README.md
+- Zama Discord: #developer-program
+

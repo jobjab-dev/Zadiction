@@ -1,0 +1,38 @@
+{
+  "name": "Zadiction",
+  "version": "1.0.0",
+  "description": "Confidential Prediction Market using Zama FHEVM - Built for Zama Developer Program November 2024",
+  "private": true,
+  "license": "BSD-3-Clause-Clear",
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "all:demo": "pnpm install && pnpm contracts:build && pnpm contracts:deploy && pnpm start",
+    "all:setup": "pnpm install && pnpm contracts:build",
+    "sepolia:deploy": "pnpm clean && pnpm contracts:build && pnpm --filter ./packages/hardhat deploy:full",
+    "clean": "pnpm --filter ./packages/hardhat clean",
+    "clean:full": "node scripts/clean-all.js",
+    "chain": "pnpm --filter ./packages/hardhat chain",
+    "contracts:build": "pnpm --filter ./packages/hardhat compile",
+    "contracts:deploy": "pnpm --filter ./packages/hardhat deploy:localhost",
+    "contracts:deploy:sepolia": "pnpm --filter ./packages/hardhat deploy:sepolia",
+    "contracts:test": "pnpm --filter ./packages/hardhat test",
+    "verify:sepolia": "pnpm --filter ./packages/hardhat verify:sepolia",
+    "start": "pnpm --filter ./packages/nextjs dev",
+    "build": "pnpm --filter ./packages/nextjs build",
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,md}'",
+    "lint": "pnpm --filter ./packages/nextjs lint"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0",
+    "typescript": "^5.2.0"
+  }
+}
+
