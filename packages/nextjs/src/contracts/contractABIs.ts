@@ -6,7 +6,7 @@
  * 
  * To regenerate: pnpm --filter ./packages/hardhat export:abis
  * 
- * Generated: 2025-11-22T14:02:21.210Z
+ * Generated: 2025-11-22T18:33:55.128Z
  */
 
 // ============================================

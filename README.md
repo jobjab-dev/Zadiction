@@ -5,20 +5,6 @@
 [![Zama FHEVM](https://img.shields.io/badge/Zama-FHEVM%20v0.9-yellow)](https://docs.zama.ai/fhevm)
 [![License](https://img.shields.io/badge/license-BSD--3--Clause--Clear-blue.svg)](LICENSE)
 
-**Built for Zama Developer Program - November 2025**
-
----
-
-## 🎨 Unique "Sketch" Aesthetic
-
-Zadiction features a distinct **Hand-Drawn / Sketch Paper** theme, moving away from the standard "corporate crypto" look.
-- **Paper Backgrounds**: Textured, natural feel.
-- **Marker Fonts**: Comic Sans, Marker Felt.
-- **Sketch Icons**: Custom SVG icons drawn to look like pencil sketches.
-- **Animations**: Smooth CSS animations for toasts and interactions.
-
----
-
 ## 🎯 Overview
 
 Zadiction is a **Lottery Automated Market Maker (AMM)** where users bet against a liquidity pool (collateral). Unlike traditional lotteries with fixed pools, Zadiction offers **fixed-odds betting** (locked at the time of the bet) that dynamically adjust based on the market's risk exposure.
@@ -67,7 +53,7 @@ Zadiction is a **Lottery Automated Market Maker (AMM)** where users bet against 
 
 1. **Clone the repository**
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/jobjab-dev/Zadiction.git
    cd Zadiction
    pnpm install
    ```

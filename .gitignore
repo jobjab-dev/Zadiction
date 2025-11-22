@@ -37,9 +37,6 @@ artifacts/
 typechain-types/
 deployments/*.json
 
-# Generated contracts
-packages/nextjs/src/contracts/deployedContracts.json
-
 # IDE
 .vscode/
 .idea/
