@@ -3,7 +3,7 @@ import { FallbackProvider, JsonRpcProvider } from 'ethers';
 import { usePublicClient } from 'wagmi';
 import type { Client, Chain, Transport } from 'viem';
 
-export function publicClientToProvider(client: Client<Transport, Chain>) {
+export function publicClientToProvider(client: any) {
     const { chain, transport } = client;
     const network = {
         chainId: chain.id,
