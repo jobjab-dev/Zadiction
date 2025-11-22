@@ -1,8 +1,9 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
+import { Contract } from "ethers";
 
 /**
- * Deployment script for Prediction Market Factory
+ * Deployment script for Lottery Factory
  * 
  * This is the MAIN deployment script.
  * Deploy Factory once → Create unlimited markets via UI
@@ -14,10 +15,10 @@ const deployFactory: DeployFunction = async function (
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  console.log("\n🏭 Deploying Prediction Market Factory...");
+  console.log("\n🏭 Deploying Lottery Factory...");
   console.log("📍 Deployer (will be owner):", deployer);
 
-  const result = await deploy("PredictionMarketFactory", {
+  const result = await deploy("LotteryFactory", {
     from: deployer,
     args: [],
     log: true,
@@ -40,5 +41,4 @@ const deployFactory: DeployFunction = async function (
 };
 
 export default deployFactory;
-deployFactory.tags = ["PredictionMarketFactory", "Factory", "all"];
-
+deployFactory.tags = ["LotteryFactory", "Factory", "all"];

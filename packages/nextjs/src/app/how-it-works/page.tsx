@@ -1,351 +1,261 @@
 'use client';
 
 import Link from 'next/link';
+import { EncryptedText } from '../../components/EncryptedText';
+import {
+  SketchScale,
+  SketchShield,
+  SketchSearch,
+  SketchCreate,
+  SketchGrid,
+  SketchTrophy,
+  SketchSparkles,
+  SketchBook,
+  SketchMath,
+  SketchChart,
+  SketchBulb,
+  SketchDice,
+  SketchMoneyBag
+} from '../../components/SketchIcons';
 
 export default function HowItWorksPage() {
   return (
-    <div className="min-h-screen bg-gradient-dark">
-      {/* Header */}
-      <header className="border-b border-zama-yellow/20 bg-zama-black-light">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-zama rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-zama-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <span className="text-xl font-bold text-zama-yellow">Zadiction</span>
-            </Link>
-            <Link href="/" className="btn-zama-outline">
-              Back to Market
-            </Link>
+    <main className="container mx-auto px-4 py-12 max-w-5xl">
+      {/* Title */}
+      <div className="text-center mb-16">
+        <h1 className="text-5xl md:text-6xl font-bold text-ink mb-4 transform -rotate-1">
+          <EncryptedText text="How It Works" hoverOnly={false} animateOnView={true} />
+        </h1>
+        <p className="text-xl text-gray-600 font-medium">
+          Transparent Linear-Capped Lottery AMM
+        </p>
+        <div className="h-2 w-32 bg-marker-yellow mx-auto mt-4 rounded-full transform rotate-1"></div>
+      </div>
+
+      {/* Concept Section - 3 Cards */}
+      <section className="mb-16">
+        <h2 className="text-3xl font-bold text-ink mb-8 text-center transform -rotate-1 flex items-center justify-center gap-3">
+          <SketchSparkles className="w-8 h-8 text-ink" />
+          <EncryptedText text="The Concept" hoverOnly={false} animateOnView={true} />
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Card 1: Dynamic Odds */}
+          <div className="card-sketch bg-white text-center hover:shadow-sketch-hover transition-all duration-300 group">
+            <div className="relative w-32 h-32 mx-auto mb-4 flex items-center justify-center">
+              <SketchScale className="w-24 h-24 text-ink group-hover:scale-110 transition-transform duration-300" />
+            </div>
+            <h3 className="text-xl font-bold text-ink mb-2">
+              <EncryptedText text="Dynamic Odds" hoverOnly={false} animateOnView={true} />
+            </h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Odds decrease as more people bet on the same number, just like an AMM!
+            </p>
+            <div className="absolute -top-2 -right-2 w-8 h-8 bg-marker-yellow rounded-full transform rotate-12 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+
+          {/* Card 2: 100% Solvent */}
+          <div className="card-sketch bg-white text-center hover:shadow-sketch-hover transition-all duration-300 group">
+            <div className="relative w-32 h-32 mx-auto mb-4 flex items-center justify-center">
+              <SketchShield className="w-24 h-24 text-ink group-hover:scale-110 transition-transform duration-300" />
+            </div>
+            <h3 className="text-xl font-bold text-ink mb-2">
+              <EncryptedText text="100% Solvent" hoverOnly={false} animateOnView={true} />
+            </h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              The system never accepts a bet it can't pay out. Guaranteed!
+            </p>
+            <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-200 rounded-full transform rotate-12 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+
+          {/* Card 3: Transparent */}
+          <div className="card-sketch bg-white text-center hover:shadow-sketch-hover transition-all duration-300 group">
+            <div className="relative w-32 h-32 mx-auto mb-4 flex items-center justify-center">
+              <SketchSearch className="w-24 h-24 text-ink group-hover:scale-110 transition-transform duration-300" />
+            </div>
+            <h3 className="text-xl font-bold text-ink mb-2">
+              <EncryptedText text="Transparent" hoverOnly={false} animateOnView={true} />
+            </h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              All math and funds are on-chain. Random numbers secured by FHE!
+            </p>
+            <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-200 rounded-full transform rotate-12 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           </div>
         </div>
-      </header>
+      </section>
 
-      {/* Content */}
-      <main className="container mx-auto px-4 py-12 max-w-4xl">
-        {/* Title */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-zama-yellow mb-4">
-            How It Works
-          </h1>
-          <p className="text-xl text-gray-400">
-            Simple, fair, and completely confidential
-          </p>
-        </div>
+      {/* Game Flow - Comic Strip Style */}
+      <section className="mb-16">
+        <h2 className="text-3xl font-bold text-ink mb-8 text-center transform rotate-1 flex items-center justify-center gap-3">
+          <SketchBook className="w-8 h-8 text-ink" />
+          <EncryptedText text="Game Flow" hoverOnly={false} animateOnView={true} />
+        </h2>
 
-        {/* Flow Diagram */}
-        <section className="card-zama-glow mb-12">
-          <h2 className="text-2xl font-bold text-zama-yellow mb-6">📊 Market Flow</h2>
-          
-          <div className="space-y-4">
-            {/* Step 1 */}
-            <div className="flex items-start gap-4 p-4 bg-zama-black-lighter rounded-lg border border-zama-yellow/30">
-              <div className="flex-shrink-0 w-12 h-12 bg-gradient-zama rounded-full flex items-center justify-center text-zama-black font-bold text-xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Step 1 */}
+          <div className="relative">
+            <div className="card-sketch bg-white relative group hover:shadow-sketch-hover transition-all duration-300">
+              {/* Step Number Badge */}
+              <div className="absolute -top-3 -left-3 w-12 h-12 bg-marker-yellow border-2 border-ink rounded-full flex items-center justify-center text-ink font-bold text-xl shadow-sketch z-10 transform -rotate-12 group-hover:rotate-0 transition-transform">
                 1
               </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-white mb-1">Creator Creates Market</h3>
-                <p className="text-gray-400 text-sm">
-                  Set question, stake amount (e.g. 0.01 ETH), deadline, and resolver
+
+              {/* Illustration */}
+              <div className="relative w-full h-48 mb-4 flex items-center justify-center bg-paper-dark/30 overflow-hidden">
+                <SketchCreate className="w-32 h-32 text-ink group-hover:scale-110 transition-transform duration-300" />
+              </div>
+
+              {/* Content */}
+              <div className="p-6 pt-0">
+                <h3 className="text-xl font-bold text-ink mb-2">
+                  <EncryptedText text="Create Round" hoverOnly={false} animateOnView={true} />
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Creator deposits collateral and sets parameters (digits, initial odds)
                 </p>
               </div>
-            </div>
 
-            {/* Arrow */}
-            <div className="flex justify-center">
-              <svg className="w-6 h-6 text-zama-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
+              {/* Decorative arrow */}
+              <div className="hidden md:block absolute -right-8 top-1/2 transform -translate-y-1/2 text-gray-300 text-4xl">
+                →
+              </div>
             </div>
+          </div>
 
-            {/* Step 2 */}
-            <div className="flex items-start gap-4 p-4 bg-zama-black-lighter rounded-lg border border-blue-500/30">
-              <div className="flex-shrink-0 w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+          {/* Step 2 */}
+          <div className="relative">
+            <div className="card-sketch bg-white relative group hover:shadow-sketch-hover transition-all duration-300">
+              {/* Step Number Badge */}
+              <div className="absolute -top-3 -left-3 w-12 h-12 bg-marker-yellow border-2 border-ink rounded-full flex items-center justify-center text-ink font-bold text-xl shadow-sketch z-10 transform -rotate-12 group-hover:rotate-0 transition-transform">
                 2
               </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-white mb-1">Players Make Predictions</h3>
-                <p className="text-gray-400 text-sm mb-2">
-                  Each player pays <span className="text-zama-yellow font-bold">same stake</span> + choose <span className="text-green-400">YES</span> or <span className="text-red-400">NO</span>
+
+              {/* Illustration */}
+              <div className="relative w-full h-48 mb-4 flex items-center justify-center bg-paper-dark/30 overflow-hidden">
+                <SketchGrid className="w-32 h-32 text-ink group-hover:scale-110 transition-transform duration-300" />
+              </div>
+
+              {/* Content */}
+              <div className="p-6 pt-0">
+                <h3 className="text-xl font-bold text-ink mb-2">
+                  <EncryptedText text="Place Bets" hoverOnly={false} animateOnView={true} />
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Players pick numbers. Odds are locked at the moment of betting
                 </p>
-                <div className="text-encrypted text-xs">
-                  🔐 All predictions encrypted - nobody can see them!
-                </div>
+              </div>
+
+              {/* Decorative arrow */}
+              <div className="hidden md:block absolute -right-8 top-1/2 transform -translate-y-1/2 text-gray-300 text-4xl">
+                →
               </div>
             </div>
+          </div>
 
-            {/* Arrow */}
-            <div className="flex justify-center">
-              <svg className="w-6 h-6 text-zama-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
-            </div>
-
-            {/* Step 3 */}
-            <div className="flex items-start gap-4 p-4 bg-zama-black-lighter rounded-lg border border-orange-500/30">
-              <div className="flex-shrink-0 w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+          {/* Step 3 */}
+          <div className="relative">
+            <div className="card-sketch bg-white relative group hover:shadow-sketch-hover transition-all duration-300">
+              {/* Step Number Badge */}
+              <div className="absolute -top-3 -left-3 w-12 h-12 bg-marker-yellow border-2 border-ink rounded-full flex items-center justify-center text-ink font-bold text-xl shadow-sketch z-10 transform -rotate-12 group-hover:rotate-0 transition-transform">
                 3
               </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-white mb-1">Market Locks & Resolves</h3>
-                <p className="text-gray-400 text-sm">
-                  Deadline passes → Resolver declares outcome (true/false)
-                </p>
-              </div>
-            </div>
 
-            {/* Arrow */}
-            <div className="flex justify-center">
-              <svg className="w-6 h-6 text-zama-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
-            </div>
-
-            {/* Step 4 */}
-            <div className="flex items-start gap-4 p-4 bg-zama-black-lighter rounded-lg border border-green-500/30">
-              <div className="flex-shrink-0 w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                4
+              {/* Illustration */}
+              <div className="relative w-full h-48 mb-4 flex items-center justify-center bg-paper-dark/30 overflow-hidden">
+                <SketchTrophy className="w-32 h-32 text-ink group-hover:scale-110 transition-transform duration-300" />
               </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-white mb-1">Compute Winners (FHE Magic)</h3>
-                <p className="text-gray-400 text-sm mb-2">
-                  Smart contract uses FHE to determine winners WITHOUT decrypting predictions
-                </p>
-                <code className="text-xs text-zama-yellow bg-zama-black px-2 py-1 rounded">
-                  isWinner = outcome ? prediction : NOT(prediction)
-                </code>
-              </div>
-            </div>
 
-            {/* Arrow */}
-            <div className="flex justify-center">
-              <svg className="w-6 h-6 text-zama-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
-            </div>
-
-            {/* Step 5 */}
-            <div className="flex items-start gap-4 p-4 bg-zama-black-lighter rounded-lg border border-zama-yellow/50">
-              <div className="flex-shrink-0 w-12 h-12 bg-gradient-zama rounded-full flex items-center justify-center text-zama-black font-bold text-xl">
-                5
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-white mb-1">Winners Withdraw</h3>
-                <p className="text-gray-400 text-sm">
-                  Winners split the prize pool equally 💰
+              {/* Content */}
+              <div className="p-6 pt-0">
+                <h3 className="text-xl font-bold text-ink mb-2">
+                  <EncryptedText text="Draw & Claim" hoverOnly={false} animateOnView={true} />
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Winning number is drawn. Winners claim payouts anytime!
                 </p>
               </div>
             </div>
           </div>
-        </section>
-
-        {/* Money Flow */}
-        <section className="card-zama mb-12">
-          <h2 className="text-2xl font-bold text-zama-yellow mb-6">💰 Money Calculation</h2>
-
-          {/* Formula */}
-          <div className="bg-zama-black-lighter p-6 rounded-lg border border-zama-yellow/30 mb-6">
-            <h3 className="text-lg font-bold text-white mb-4">📐 Formulas</h3>
-            <div className="space-y-3 font-mono text-sm">
-              <div className="flex flex-col gap-1">
-                <span className="text-gray-400">1. Total Pool:</span>
-                <span className="text-zama-yellow">totalPool = participants × stakeAmount</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-gray-400">2. Creator Fee:</span>
-                <span className="text-zama-yellow">creatorFee = totalPool × (feePercent / 100)</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-gray-400">3. Prize Pool:</span>
-                <span className="text-zama-yellow">prizePool = totalPool - creatorFee</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-gray-400">4. Per Winner:</span>
-                <span className="text-zama-yellow">payout = prizePool / winnerCount</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-gray-400">5. Profit:</span>
-                <span className="text-green-400">profit = payout - stakeAmount</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Example */}
-          <div className="bg-gradient-to-r from-blue-500/10 to-green-500/10 p-6 rounded-lg border border-zama-yellow/20">
-            <h3 className="text-lg font-bold text-white mb-4">📊 Example</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div>
-                <h4 className="text-sm font-bold text-gray-400 mb-2">Setup</h4>
-                <ul className="space-y-1 text-sm text-gray-300">
-                  <li>• Stake: <span className="text-zama-yellow">0.01 ETH</span></li>
-                  <li>• Fee: <span className="text-zama-yellow">2%</span></li>
-                  <li>• Total: <span className="text-white font-bold">10 players</span></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-gray-400 mb-2">Predictions</h4>
-                <ul className="space-y-1 text-sm text-gray-300">
-                  <li>• <span className="text-green-400">6 chose YES</span></li>
-                  <li>• <span className="text-red-400">4 chose NO</span></li>
-                  <li>• Outcome: <span className="text-green-400 font-bold">YES wins!</span></li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="border-t border-zama-yellow/20 pt-4">
-              <h4 className="text-sm font-bold text-white mb-3">Calculation:</h4>
-              <div className="space-y-2 text-sm font-mono">
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Total Pool:</span>
-                  <span className="text-white">10 × 0.01 = <span className="text-zama-yellow">0.1 ETH</span></span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Creator Fee:</span>
-                  <span className="text-white">0.1 × 2% = <span className="text-zama-yellow">0.002 ETH</span></span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Prize Pool:</span>
-                  <span className="text-white">0.1 - 0.002 = <span className="text-zama-yellow">0.098 ETH</span></span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Per Winner:</span>
-                  <span className="text-white">0.098 ÷ 6 = <span className="text-green-400 font-bold">0.0163 ETH</span></span>
-                </div>
-              </div>
-            </div>
-
-            <div className="border-t border-zama-yellow/20 pt-4 mt-4">
-              <h4 className="text-sm font-bold text-white mb-3">Results:</h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <span className="text-green-400">✅</span>
-                  <span className="text-gray-300">6 winners get <span className="text-green-400 font-bold">0.0163 ETH</span> each</span>
-                  <span className="text-green-400 text-xs">(+63% profit)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-red-400">❌</span>
-                  <span className="text-gray-300">4 losers lose <span className="text-red-400 font-bold">0.01 ETH</span></span>
-                  <span className="text-red-400 text-xs">(-100%)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-zama-yellow">💰</span>
-                  <span className="text-gray-300">Creator gets <span className="text-zama-yellow font-bold">0.002 ETH</span> fee</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Key Points */}
-        <section className="card-zama mb-12">
-          <h2 className="text-2xl font-bold text-zama-yellow mb-6">🎯 Key Points</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 bg-green-500/10 rounded-lg border border-green-500/30">
-              <h3 className="text-lg font-bold text-green-400 mb-2">✅ If You Win</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li>• Get back your stake</li>
-                <li>• Plus share of losers' money</li>
-                <li>• More losers = more profit</li>
-                <li>• Fewer winners = bigger payout</li>
-              </ul>
-            </div>
-
-            <div className="p-4 bg-red-500/10 rounded-lg border border-red-500/30">
-              <h3 className="text-lg font-bold text-red-400 mb-2">❌ If You Lose</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li>• Lose entire stake</li>
-                <li>• Your money goes to winners</li>
-                <li>• Cannot withdraw</li>
-                <li>• Try again next market!</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-4 p-4 bg-zama-yellow/10 rounded-lg border border-zama-yellow/30">
-            <h3 className="text-lg font-bold text-zama-yellow mb-2">💡 Important</h3>
-            <ul className="space-y-2 text-sm text-gray-300">
-              <li>• <span className="font-bold text-white">Fixed Stake:</span> Everyone pays the same amount</li>
-              <li>• <span className="font-bold text-white">Winner-Takes-All:</span> Winners split the entire pool</li>
-              <li>• <span className="font-bold text-white">Encrypted:</span> Nobody sees predictions until resolution</li>
-              <li>• <span className="font-bold text-white">Fair:</span> No front-running or manipulation</li>
-            </ul>
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <section className="card-zama mb-12">
-          <h2 className="text-2xl font-bold text-zama-yellow mb-6">❓ Quick FAQ</h2>
-          
-          <div className="space-y-4">
-            <details className="group">
-              <summary className="cursor-pointer p-4 bg-zama-black-lighter rounded-lg border border-zama-yellow/20 font-bold text-white hover:border-zama-yellow/40 transition-colors">
-                What if everyone picks the same side?
-              </summary>
-              <div className="mt-2 p-4 text-gray-400 text-sm">
-                If everyone picks YES and YES wins, everyone gets their money back (minus small fee). Profit is minimal but you don't lose!
-              </div>
-            </details>
-
-            <details className="group">
-              <summary className="cursor-pointer p-4 bg-zama-black-lighter rounded-lg border border-zama-yellow/20 font-bold text-white hover:border-zama-yellow/40 transition-colors">
-                What if nobody wins?
-              </summary>
-              <div className="mt-2 p-4 text-gray-400 text-sm">
-                Rare case! Pool stays in contract. There's an emergency refund function for such situations.
-              </div>
-            </details>
-
-            <details className="group">
-              <summary className="cursor-pointer p-4 bg-zama-black-lighter rounded-lg border border-zama-yellow/20 font-bold text-white hover:border-zama-yellow/40 transition-colors">
-                Can I see others' predictions?
-              </summary>
-              <div className="mt-2 p-4 text-gray-400 text-sm">
-                <span className="text-zama-yellow font-bold">NO!</span> That's the magic of FHE. All predictions are encrypted. Even on blockchain explorer, you only see ciphertext. 🔐
-              </div>
-            </details>
-
-            <details className="group">
-              <summary className="cursor-pointer p-4 bg-zama-black-lighter rounded-lg border border-zama-yellow/20 font-bold text-white hover:border-zama-yellow/40 transition-colors">
-                Who is the Creator?
-              </summary>
-              <div className="mt-2 p-4 text-gray-400 text-sm">
-                The person who deploys the market. They set the question, stake amount, and deadline. They earn a small fee (default 2%) but don't participate in predictions.
-              </div>
-            </details>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <div className="text-center">
-          <Link href="/" className="btn-zama inline-flex items-center gap-2">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to Market
-          </Link>
-          <p className="text-gray-500 text-sm mt-4">
-            Ready to make your encrypted prediction?
-          </p>
         </div>
-      </main>
+      </section>
 
-      {/* Footer */}
-      <footer className="border-t border-zama-yellow/20 py-8 mt-12">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-500 text-sm">
-            Built with <span className="text-zama-yellow">❤️</span> using Zama FHEVM
-          </p>
-          <p className="text-gray-600 text-xs mt-2">
-            Fully Homomorphic Encryption for True Privacy
-          </p>
+      {/* Math Section - Sticky Note Style */}
+      <section className="mb-16">
+        <h2 className="text-3xl font-bold text-ink mb-8 text-center transform -rotate-1 flex items-center justify-center gap-3">
+          <SketchMath className="w-8 h-8 text-ink" />
+          <EncryptedText text="The Math" hoverOnly={false} animateOnView={true} />
+        </h2>
+
+        <div className="card-sketch bg-yellow-50 border-2 border-yellow-200 relative">
+          {/* Decorative tape */}
+          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-24 h-6 bg-yellow-100/80 border border-yellow-200/50 shadow-sm"></div>
+
+          <div className="p-8">
+            {/* Formula */}
+            <div className="bg-white p-6 rounded-sketch-sm border-2 border-ink/10 font-mono text-sm md:text-base mb-6 overflow-x-auto">
+              <p className="text-gray-500 mb-2">
+                // Odds Formula
+              </p>
+              <p className="text-ink font-bold text-lg">
+                Odds = Max(MinOdds, InitialOdds × (1 - Exposure ÷ Limit))
+              </p>
+            </div>
+
+            {/* Definitions */}
+            <div className="space-y-4">
+              <div className="flex gap-4 items-start">
+                <SketchMoneyBag className="w-8 h-8 text-ink flex-shrink-0" />
+                <div>
+                  <h4 className="font-bold text-ink mb-1">
+                    <EncryptedText text="Limit (L)" hoverOnly={false} animateOnView={true} />
+                  </h4>
+                  <p className="text-gray-600 text-sm">
+                    The maximum payout the pool can afford = Collateral × (1 - Fee)
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-4 items-start">
+                <SketchChart className="w-8 h-8 text-ink flex-shrink-0" />
+                <div>
+                  <h4 className="font-bold text-ink mb-1">
+                    <EncryptedText text="Exposure (E)" hoverOnly={false} animateOnView={true} />
+                  </h4>
+                  <p className="text-gray-600 text-sm">
+                    Total amount the pool must pay if a specific number wins
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-4 items-start">
+                <SketchBulb className="w-8 h-8 text-ink flex-shrink-0" />
+                <div>
+                  <h4 className="font-bold text-ink mb-1">
+                    <EncryptedText text="Result" hoverOnly={false} animateOnView={true} />
+                  </h4>
+                  <p className="text-gray-600 text-sm">
+                    More bets on "77" → Higher Exposure → Lower Odds → Pool stays solvent!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </footer>
-    </div>
+      </section>
+
+      {/* CTA */}
+      <div className="text-center">
+        <Link
+          href="/markets"
+          className="btn-sketch-primary inline-flex items-center gap-3 text-xl px-8 py-4 transform hover:-rotate-1 hover:scale-105 transition-all duration-300"
+        >
+          <SketchDice className="w-8 h-8" />
+          Browse Markets
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </Link>
+      </div>
+    </main>
   );
 }
-

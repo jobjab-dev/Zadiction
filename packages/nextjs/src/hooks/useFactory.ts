@@ -3,23 +3,23 @@ import { ethers } from 'ethers';
 import { FACTORY_ABI } from '@/contracts/factoryABI';
 
 /**
- * Hook for interacting with PredictionMarketFactory
+ * Hook for interacting with LotteryFactory
  */
 
 export interface MarketInfo {
   marketAddress: string;
-  question: string;
-  stakeAmount: bigint;
-  commitDeadline: bigint;
-  resolveDeadline: bigint;
-  resolver: string;
+  roundId: bigint;
+  digits: number;
+  collateral: bigint;
+  betDeadline: bigint;
   createdAt: bigint;
   isActive: boolean;
+  isResolved: boolean;
 }
 
 export function useFactory(
   factoryAddress: string | undefined,
-  provider: ethers.BrowserProvider | null
+  providerOrSigner: ethers.Provider | ethers.Signer | null
 ) {
   const [markets, setMarkets] = useState<string[]>([]);
   const [marketsInfo, setMarketsInfo] = useState<MarketInfo[]>([]);
@@ -29,24 +29,24 @@ export function useFactory(
 
   // Check if current user is owner
   const isOwner = useCallback(async (userAddress?: string) => {
-    if (!factoryAddress || !provider || !userAddress) return false;
-    
+    if (!factoryAddress || !providerOrSigner || !userAddress) return false;
+
     try {
-      const contract = new ethers.Contract(factoryAddress, FACTORY_ABI, provider);
+      const contract = new ethers.Contract(factoryAddress, FACTORY_ABI, providerOrSigner);
       const ownerAddress = await contract.owner();
       return ownerAddress.toLowerCase() === userAddress.toLowerCase();
     } catch (err) {
       console.error('Error checking owner:', err);
       return false;
     }
-  }, [factoryAddress, provider]);
+  }, [factoryAddress, providerOrSigner]);
 
   // Fetch all markets
   const fetchMarkets = useCallback(async () => {
-    if (!factoryAddress || !provider) return;
+    if (!factoryAddress || !providerOrSigner) return;
 
     try {
-      const contract = new ethers.Contract(factoryAddress, FACTORY_ABI, provider);
+      const contract = new ethers.Contract(factoryAddress, FACTORY_ABI, providerOrSigner);
       const allMarkets = await contract.getAllMarkets();
       setMarkets(allMarkets);
 
@@ -56,32 +56,34 @@ export function useFactory(
         const info = await contract.getMarketInfo(marketAddr);
         infos.push({
           marketAddress: info[0],
-          question: info[1],
-          stakeAmount: info[2],
-          commitDeadline: info[3],
-          resolveDeadline: info[4],
-          resolver: info[5],
-          createdAt: info[6],
-          isActive: info[7],
+          roundId: info[1],
+          digits: Number(info[2]),
+          collateral: info[3],
+          betDeadline: info[4],
+          createdAt: info[5],
+          isActive: info[6],
+          isResolved: info[7],
         });
       }
+      // Sort by newest first
+      infos.sort((a, b) => Number(b.roundId - a.roundId));
       setMarketsInfo(infos);
     } catch (err: any) {
       console.error('Error fetching markets:', err);
       setError(err.message);
     }
-  }, [factoryAddress, provider]);
+  }, [factoryAddress, providerOrSigner]);
 
   // Create new market
   const createMarket = useCallback(async (params: {
-    question: string;
-    stakeAmount: string; // in ETH
-    commitPeriodDays: number;
-    resolvePeriodDays: number;
-    resolverAddress: string;
+    digits: number;
+    betPeriodDays: number;
+    initialOdds: number; // e.g. 70
+    minOdds: number;     // e.g. 2
     creatorFeePercent: number;
+    collateral: string; // ETH amount
   }) => {
-    if (!factoryAddress || !provider) {
+    if (!factoryAddress || !providerOrSigner) {
       throw new Error('Factory not initialized');
     }
 
@@ -89,27 +91,32 @@ export function useFactory(
     setError(null);
 
     try {
-      const signer = await provider.getSigner();
+      let signer;
+      if ('getSigner' in providerOrSigner) {
+        signer = await providerOrSigner.getSigner();
+      } else {
+        signer = providerOrSigner;
+      }
+
       const contract = new ethers.Contract(factoryAddress, FACTORY_ABI, signer);
 
-      const stakeAmount = ethers.parseEther(params.stakeAmount);
-      const commitPeriod = params.commitPeriodDays * 24 * 60 * 60;
-      const resolvePeriod = params.resolvePeriodDays * 24 * 60 * 60;
-      const creatorFee = params.creatorFeePercent * 100; // to basis points
+      const betPeriod = params.betPeriodDays * 24 * 60 * 60;
+      const initialOddsScaled = Math.floor(params.initialOdds * 100); // Scale by 100
+      const minOddsScaled = Math.floor(params.minOdds * 100);         // Scale by 100
+      const creatorFee = Math.floor(params.creatorFeePercent * 100);  // Scale by 100
+      const collateralWei = ethers.parseEther(params.collateral);
 
-      console.log('🏭 Creating market...');
-      console.log('Question:', params.question);
-      console.log('Stake:', params.stakeAmount, 'ETH');
-      console.log('Commit Period:', params.commitPeriodDays, 'days');
-      console.log('Resolve Period:', params.resolvePeriodDays, 'days');
+      console.log('🏭 Creating lottery round...');
+      console.log('Digits:', params.digits);
+      console.log('Collateral:', params.collateral, 'ETH');
 
       const tx = await contract.createMarket(
-        params.question,
-        stakeAmount,
-        commitPeriod,
-        resolvePeriod,
-        params.resolverAddress,
-        creatorFee
+        params.digits,
+        betPeriod,
+        initialOddsScaled,
+        minOddsScaled,
+        creatorFee,
+        { value: collateralWei }
       );
 
       console.log('⏳ Waiting for confirmation...');
@@ -143,15 +150,15 @@ export function useFactory(
     } finally {
       setLoading(false);
     }
-  }, [factoryAddress, provider, fetchMarkets]);
+  }, [factoryAddress, providerOrSigner, fetchMarkets]);
 
   // Fetch owner
   useEffect(() => {
-    if (!factoryAddress || !provider) return;
+    if (!factoryAddress || !providerOrSigner) return;
 
     const fetchOwner = async () => {
       try {
-        const contract = new ethers.Contract(factoryAddress, FACTORY_ABI, provider);
+        const contract = new ethers.Contract(factoryAddress, FACTORY_ABI, providerOrSigner);
         const ownerAddr = await contract.owner();
         setOwner(ownerAddr);
       } catch (err) {
@@ -160,7 +167,7 @@ export function useFactory(
     };
 
     fetchOwner();
-  }, [factoryAddress, provider]);
+  }, [factoryAddress, providerOrSigner]);
 
   // Initial fetch
   useEffect(() => {

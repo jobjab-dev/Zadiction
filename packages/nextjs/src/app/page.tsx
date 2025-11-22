@@ -1,46 +1,56 @@
 'use client';
 
 import Link from 'next/link';
-
+import { useState } from 'react';
+import SketchCanvas from '@/components/SketchCanvas';
 export default function HomePage() {
+  const [showContent, setShowContent] = useState(false);
+
   return (
-    <div className="min-h-screen bg-gradient-dark flex items-center justify-center">
-      <div className="text-center max-w-2xl mx-auto px-4">
-        {/* Logo */}
-        <div className="w-24 h-24 bg-gradient-zama rounded-2xl flex items-center justify-center mx-auto mb-6 animate-pulse-glow">
-          <svg className="w-16 h-16 text-zama-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-          </svg>
+    <div className="h-screen w-screen overflow-hidden flex flex-col items-center justify-center p-4 fixed inset-0">
+      <div className="max-w-4xl w-full text-center flex flex-col items-center">
+
+        {/* Sketch Animation Area */}
+        <div className="mb-4">
+          <SketchCanvas onComplete={() => setShowContent(true)} />
         </div>
 
-        {/* Title */}
-        <h1 className="text-5xl md:text-6xl font-bold text-zama-yellow mb-4">
-          Zadiction
-        </h1>
-        <p className="text-xl text-gray-400 mb-8">
-          Confidential Prediction Markets with FHEVM
-        </p>
+        {/* Content that fades in after sketch */}
+        <div className={`transition-all duration-1000 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <h1 className="text-6xl md:text-8xl font-bold text-ink mb-2 tracking-tight" style={{ fontFamily: 'Marker Felt, Comic Sans MS, sans-serif' }}>
+            Zadiction
+          </h1>
 
-        {/* Description */}
-        <div className="card-zama mb-8">
-          <p className="text-gray-300 mb-4">
-            Make predictions with complete privacy using Fully Homomorphic Encryption.
-            Your choices remain encrypted until the market resolves.
-          </p>
-          <div className="text-encrypted text-sm">
-            🔐 Powered by Zama FHEVM
+          {/* Hand-drawn underline */}
+          <div className="h-2 w-64 bg-marker-yellow mx-auto mb-12 rounded-full transform -rotate-1"></div>
+
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
+            <Link href="/markets" className="btn-sketch-primary text-2xl px-10 py-5 transform hover:-rotate-2">
+              Start Predicting
+            </Link>
+
+            <Link href="/how-it-works" className="btn-sketch text-2xl px-10 py-5 transform hover:rotate-2">
+              How It Works
+            </Link>
+          </div>
+
+          {/* Decorative elements */}
+          <div className="absolute top-10 left-10 opacity-20 pointer-events-none hidden md:block">
+            <svg width="150" height="150" viewBox="0 0 100 100">
+              <path d="M10 10 Q 50 50 90 10" stroke="black" fill="none" strokeWidth="2" />
+              <path d="M10 30 Q 50 70 90 30" stroke="black" fill="none" strokeWidth="2" />
+            </svg>
+          </div>
+
+          <div className="absolute bottom-10 right-10 opacity-20 pointer-events-none hidden md:block transform rotate-180">
+            <svg width="150" height="150" viewBox="0 0 100 100">
+              <path d="M10 10 Q 50 50 90 10" stroke="black" fill="none" strokeWidth="2" />
+              <path d="M10 30 Q 50 70 90 30" stroke="black" fill="none" strokeWidth="2" />
+            </svg>
           </div>
         </div>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/markets" className="btn-zama">
-            View Markets
-          </Link>
-          <Link href="/how-it-works" className="btn-zama-outline">
-            How It Works
-          </Link>
-        </div>
       </div>
     </div>
   );

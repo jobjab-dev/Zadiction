@@ -7,7 +7,7 @@ dotenv.config();
  * Deploy Factory + Verify Script
  * 
  * This script:
- * 1. Deploys PredictionMarketFactory
+ * 1. Deploys LotteryFactory
  * 2. Verifies on Etherscan
  * 3. Optionally creates first market
  * 4. Saves addresses to file
@@ -18,19 +18,19 @@ async function main() {
 
   const [deployer] = await ethers.getSigners();
   console.log("📍 Deploying with account:", deployer.address);
-  
+
   const balance = await ethers.provider.getBalance(deployer.address);
   console.log("💰 Account balance:", ethers.formatEther(balance), "ETH\n");
 
   // ========================================
   // Step 1: Deploy Factory
   // ========================================
-  console.log("📦 Step 1: Deploying PredictionMarketFactory...");
-  
-  const Factory = await ethers.getContractFactory("PredictionMarketFactory");
+  console.log("📦 Step 1: Deploying LotteryFactory...");
+
+  const Factory = await ethers.getContractFactory("LotteryFactory");
   const factory = await Factory.deploy();
   await factory.waitForDeployment();
-  
+
   const factoryAddress = await factory.getAddress();
   console.log("✅ Factory deployed at:", factoryAddress);
   console.log("👤 Owner:", deployer.address);
@@ -44,7 +44,7 @@ async function main() {
   // Step 2: Verify on Etherscan
   // ========================================
   console.log("🔍 Step 2: Verifying contract on Etherscan...");
-  
+
   try {
     await run("verify:verify", {
       address: factoryAddress,
@@ -86,10 +86,26 @@ async function main() {
   console.log("   http://localhost:3000/admin/create");
   console.log("\n✨ Deployment complete!\n");
 
+  // ========================================
+  // Step 3: Export ABIs to Frontend
+  // ========================================
+  console.log("📤 Step 3: Exporting ABIs to frontend...\n");
+
+  const { execSync } = require("child_process");
+  try {
+    execSync("ts-node scripts/export-abis.ts", {
+      stdio: "inherit",
+      cwd: __dirname + "/.."
+    });
+  } catch (error) {
+    console.error("⚠️  ABI export failed, but deployment succeeded");
+    console.error("   You can export manually: pnpm --filter ./packages/hardhat export:abis\n");
+  }
+
   // Save to file
   const fs = require("fs");
   const path = require("path");
-  
+
   // Create deployments directory
   const deploymentsDir = path.join(__dirname, "..", "deployments");
   if (!fs.existsSync(deploymentsDir)) {
@@ -110,13 +126,13 @@ async function main() {
     JSON.stringify(deploymentInfo, null, 2)
   );
   console.log("💾 Deployment info saved to: deployments/latest.json\n");
-  
+
   // Also save to frontend for easy access
   const frontendConfigDir = path.join(__dirname, "..", "..", "nextjs", "src", "contracts");
   if (!fs.existsSync(frontendConfigDir)) {
     fs.mkdirSync(frontendConfigDir, { recursive: true });
   }
-  
+
   fs.writeFileSync(
     path.join(frontendConfigDir, "deployedContracts.json"),
     JSON.stringify(deploymentInfo, null, 2)
@@ -131,4 +147,3 @@ main()
     console.error(error);
     process.exit(1);
   });
-

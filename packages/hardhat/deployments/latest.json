@@ -1,8 +1,8 @@
 {
   "network": "sepolia",
   "chainId": "11155111",
-  "factoryAddress": "0x3938AbB2b659bf7deEc102BF6A9725997e066931",
+  "factoryAddress": "0xBb6eAdd896175b3Ce9073bE5598B5bFd19c9c628",
   "owner": "0x2E35c2abd06d974e5a519eB66a415Ced302b991d",
-  "deployedAt": "2025-11-19T11:36:31.172Z",
-  "etherscanUrl": "https://sepolia.etherscan.io/address/0x3938AbB2b659bf7deEc102BF6A9725997e066931"
+  "deployedAt": "2025-11-22T09:52:42.343Z",
+  "etherscanUrl": "https://sepolia.etherscan.io/address/0xBb6eAdd896175b3Ce9073bE5598B5bFd19c9c628"
 }

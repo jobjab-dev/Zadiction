@@ -1,40 +1,45 @@
 export const FACTORY_ABI = [
-  "function owner() view returns (address)",
-  "function createMarket(string,uint256,uint256,uint256,address,uint256) returns (address)",
-  "function getAllMarkets() view returns (address[])",
-  "function getActiveMarkets() view returns (address[])",
-  "function getMarketCount() view returns (uint256)",
-  "function getMarketInfo(address) view returns (tuple(address marketAddress, string question, uint256 stakeAmount, uint256 commitDeadline, uint256 resolveDeadline, address resolver, uint256 createdAt, bool isActive))",
-  "function getMarketsInfo(uint256,uint256) view returns (tuple(address,string,uint256,uint256,uint256,address,uint256,bool)[])",
-  "function transferOwnership(address) external",
-  "function deactivateMarket(address) external",
-  "event MarketCreated(address indexed marketAddress, string question, uint256 stakeAmount, uint256 commitDeadline, uint256 resolveDeadline, address indexed resolver, uint256 indexed marketId)"
-] as const;
+  "function createMarket(uint8 _digits, uint256 _betPeriod, uint256 _initialOdds, uint256 _minOdds, uint256 _creatorFeePercent) external payable returns (address)",
+  "function getAllMarkets() external view returns (address[])",
+  "function getMarketInfo(address _market) external view returns (address, uint256, uint8, uint256, uint256, uint256, bool, bool)",
+  "event MarketCreated(address indexed marketAddress, address indexed owner, uint256 roundId)"
+];
 
 export const MARKET_ABI = [
-  "function getMarketInfo() external view returns (string, uint256, uint256, uint256, uint8, uint256, uint256, bool, bool, uint256)",
-  "function getParticipantInfo(address) external view returns (bool, bool, bool)",
-  "function submitPrediction(bytes, bytes) external payable",
-  "function computeWinnerFlag(address) external view returns (bytes)",
-  "function getMyWinnerFlag() external view returns (bytes)",
-  "function claimWinnerStatus(bool) external",
-  "function withdraw() external",
-  "function refund() external",
-  "function lockMarket() external",
-  "function resolveOutcome(bool) external",
-  "function getPotentialPayout() external view returns (uint256)",
-  "function stakeAmount() external view returns (uint256)",
-  "function question() external view returns (string)",
-  "function currentPhase() external view returns (uint8)",
+  // View Functions
+  "function creator() external view returns (address)",
+  "function owner() external view returns (address)",
+  "function roundId() external view returns (uint256)",
+  "function digits() external view returns (uint8)",
+  "function maxNumber() external view returns (uint256)",
+  "function betDeadline() external view returns (uint256)",
+  "function collateral() external view returns (uint256)",
+  "function liabilityLimit() external view returns (uint256)",
+  "function initialOdds() external view returns (uint256)",
+  "function minOdds() external view returns (uint256)",
+  "function feePercent() external view returns (uint256)",
+  "function exposure(uint256) external view returns (uint256)",
+  "function totalStakes(uint256) external view returns (uint256)",
   "function isResolved() external view returns (bool)",
-  "function outcome() external view returns (bool)",
-  "function winnerCount() external view returns (uint256)",
-  "function totalStaked() external view returns (uint256)",
-  "function participantCount() external view returns (uint256)",
-  "function resolver() external view returns (address)",
-  "event PredictionSubmitted(address indexed participant, uint256 timestamp)",
-  "event OutcomeResolved(bool outcome, uint256 timestamp)",
-  "event WinnerComputed(address indexed participant, bool isWinner)",
-  "event RewardWithdrawn(address indexed participant, uint256 amount)"
-] as const;
+  "function winningNumber() external view returns (uint256)",
+  "function totalUnclaimedPayouts() external view returns (uint256)",
+  "function drawRequestedAt() external view returns (uint256)",
+  "function getBetCount() external view returns (uint256)",
+  "function bets(uint256) external view returns (address player, uint256 number, uint256 amount, uint256 lockedOdds, uint256 potentialPayout, bool claimed)",
+  "function getOdds(uint256 number, uint256 amount) external view returns (uint256)",
+  "function maxBet(uint256 number) external view returns (uint256)",
+  "function getUserBets(address user) external view returns (tuple(address player, uint256 number, uint256 amount, uint256 lockedOdds, uint256 potentialPayout, bool claimed)[])",
 
+  // Write Functions
+  "function placeBet(uint256 number) external payable",
+  "function drawResult() external",
+  "function claimWinnings() external",
+  "function withdrawCollateral() external",
+
+  // Events
+  "event BetPlaced(address indexed player, uint256 number, uint256 amount, uint256 odds, uint256 potentialPayout)",
+  "event DrawRequested(uint256 timestamp)",
+  "event RoundResolved(uint256 winningNumber)",
+  "event WinningsClaimed(address indexed player, uint256 amount)",
+  "event CollateralWithdrawn(address indexed owner, uint256 amount)"
+];

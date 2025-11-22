@@ -39,10 +39,10 @@ export function PredictionCard({
 
   if (!marketInfo) {
     return (
-      <div className="card-zama">
+      <div className="card-sketch">
         <div className="flex items-center justify-center p-8">
-          <div className="spinner-zama"></div>
-          <span className="ml-3 text-gray-400">Loading market data...</span>
+          <div className="spinner-sketch"></div>
+          <span className="ml-3 text-gray-500 font-bold">Sketching market data...</span>
         </div>
       </div>
     );
@@ -53,28 +53,31 @@ export function PredictionCard({
   const hasDeadlinePassed = countdown?.total === 0;
 
   return (
-    <div className="card-zama-glow">
+    <div className="card-sketch-hover relative bg-white">
+      {/* Tape effect (decorative) */}
+      <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-32 h-8 bg-yellow-100/80 rotate-1 shadow-sm z-10"></div>
+
       {/* Header */}
-      <div className="mb-6">
+      <div className="mb-6 mt-2">
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-2xl font-bold text-zama-yellow">Make Your Prediction</h2>
-          <span className={`phase-badge phase-${['commit', 'locked', 'resolved'][marketInfo.phase]}`}>
+          <h2 className="text-2xl font-bold text-ink">Make Your Prediction</h2>
+          <span className={`badge-sketch ${['badge-active', 'badge-locked', 'badge-closed'][marketInfo.phase] || 'badge-closed'}`}>
             {['Commit', 'Locked', 'Resolved'][marketInfo.phase]}
           </span>
         </div>
-        <div className="divider-glow"></div>
+        <div className="h-0.5 w-full bg-ink rounded-full opacity-20 my-4"></div>
       </div>
 
       {/* Question */}
-      <div className="mb-6 p-4 bg-zama-black-lighter rounded-lg border border-zama-yellow/30">
-        <p className="text-lg text-white">{marketInfo.question}</p>
+      <div className="mb-6 p-4 bg-paper-dark rounded-sketch-sm border-2 border-ink/10">
+        <p className="text-lg text-ink font-medium">{marketInfo.question}</p>
       </div>
 
       {/* Countdown */}
       {isCommitPhase && countdown && countdown.total > 0 && (
         <div className="mb-6 text-center">
-          <p className="text-gray-400 mb-2">Time remaining to predict:</p>
-          <div className="countdown">
+          <p className="text-gray-500 text-sm mb-1 font-bold">Time remaining:</p>
+          <div className="font-mono text-xl font-bold text-ink bg-marker-yellow inline-block px-2 transform -rotate-1">
             {countdown.days}d {countdown.hours}h {countdown.minutes}m {countdown.seconds}s
           </div>
         </div>
@@ -82,100 +85,96 @@ export function PredictionCard({
 
       {/* Prediction Status */}
       {participantInfo?.hasPredicted ? (
-        <div className="text-center py-8">
-          <div className="status-encrypted mb-4">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center py-8 bg-paper rounded-sketch border-2 border-dashed border-ink/20">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-ink text-white rounded-full mb-4">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
-            <span>Prediction Encrypted</span>
+            <span className="font-bold text-sm">Encrypted</span>
           </div>
-          <p className="text-gray-400">
-            Your prediction has been encrypted and stored on-chain.<br />
-            Nobody can see your choice until the market resolves.
+          <p className="text-gray-600 text-sm px-4">
+            Your prediction is sealed in an envelope.<br />
+            It will be revealed only after the market resolves.
           </p>
-          <div className="mt-4 text-encrypted text-sm">
-            🔐 Protected by FHEVM
-          </div>
         </div>
       ) : canPredict ? (
         <>
           {/* Choice Buttons */}
           <div className="flex gap-4 mb-6">
             <button
-              className={`choice-btn choice-yes ${selectedChoice === true ? 'choice-selected' : ''}`}
+              className={`flex-1 py-6 px-4 rounded-sketch border-2 transition-all duration-200 font-bold text-xl
+                ${selectedChoice === true
+                  ? 'bg-green-100 border-ink shadow-sketch transform -translate-y-1'
+                  : 'bg-white border-ink hover:bg-gray-50'}`}
               onClick={() => setSelectedChoice(true)}
               disabled={submitting}
             >
               <div className="flex flex-col items-center gap-2">
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
                 <span>YES</span>
+                {selectedChoice === true && (
+                  <div className="w-full h-2 bg-green-400/50 rounded-full transform -rotate-1"></div>
+                )}
               </div>
             </button>
-            
+
             <button
-              className={`choice-btn choice-no ${selectedChoice === false ? 'choice-selected' : ''}`}
+              className={`flex-1 py-6 px-4 rounded-sketch border-2 transition-all duration-200 font-bold text-xl
+                ${selectedChoice === false
+                  ? 'bg-red-100 border-ink shadow-sketch transform -translate-y-1'
+                  : 'bg-white border-ink hover:bg-gray-50'}`}
               onClick={() => setSelectedChoice(false)}
               disabled={submitting}
             >
               <div className="flex flex-col items-center gap-2">
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
                 <span>NO</span>
+                {selectedChoice === false && (
+                  <div className="w-full h-2 bg-red-400/50 rounded-full transform -rotate-1"></div>
+                )}
               </div>
             </button>
           </div>
 
           {/* Stake Info */}
-          <div className="mb-6 p-4 bg-zama-black-lighter/50 rounded-lg border border-zama-yellow/20">
-            <div className="flex items-center justify-between">
-              <span className="text-gray-400">Stake Required:</span>
-              <span className="text-zama-yellow font-bold text-lg">
-                {ethers.formatEther(marketInfo.stakeAmount)} ETH
-              </span>
-            </div>
+          <div className="mb-6 text-center">
+            <span className="text-gray-500 text-sm font-bold mr-2">Stake Required:</span>
+            <span className="text-ink font-bold text-lg highlight-marker">
+              {ethers.formatEther(marketInfo.stakeAmount)} ETH
+            </span>
           </div>
 
           {/* Submit Button */}
           <button
-            className="btn-zama w-full py-4 text-lg"
+            className="btn-sketch-primary w-full py-4 text-lg flex items-center justify-center gap-2"
             onClick={handleSubmit}
             disabled={selectedChoice === null || submitting || loading}
           >
             {submitting ? (
-              <span className="flex items-center justify-center gap-2">
-                <div className="spinner-zama"></div>
-                Encrypting & Submitting...
-              </span>
+              <>
+                <div className="spinner-sketch w-5 h-5"></div>
+                <span>Encrypting...</span>
+              </>
             ) : (
-              <span className="flex items-center justify-center gap-2">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              <>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                 </svg>
-                Submit Encrypted Prediction
-              </span>
+                <span>Submit Prediction</span>
+              </>
             )}
           </button>
-
-          {/* Info Text */}
-          <p className="text-center text-sm text-gray-500 mt-4">
-            Your prediction will be encrypted using FHEVM before submission.
-            Nobody can see your choice, not even the market creator.
-          </p>
         </>
       ) : (
-        <div className="text-center py-8">
-          <div className="text-4xl mb-4">⏰</div>
-          <p className="text-gray-400">
-            {hasDeadlinePassed 
-              ? 'The commit period has ended. No more predictions can be submitted.'
-              : 'Market is not accepting predictions at this time.'}
+        <div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-sketch bg-gray-50">
+          <div className="text-4xl mb-2 opacity-50">🔒</div>
+          <p className="text-gray-500 font-bold">
+            {hasDeadlinePassed
+              ? 'Predictions Closed'
+              : 'Market Not Active'}
           </p>
         </div>
       )}
     </div>
   );
 }
+
 

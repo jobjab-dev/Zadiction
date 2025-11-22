@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import Link from 'next/link';
 import { useFactory, MarketInfo } from '@/hooks/useFactory';
+import { SketchCreate } from '@/components/SketchIcons';
+import { EncryptedText } from '@/components/EncryptedText';
 
 // Try to load from deployed contracts or env
 let FACTORY_ADDRESS = process.env.NEXT_PUBLIC_FACTORY_ADDRESS || '';
@@ -66,88 +68,77 @@ export default function MarketsPage() {
   // Filter markets
   const activeMarkets = marketsInfo.filter(m => {
     const now = Math.floor(Date.now() / 1000);
-    return Number(m.commitDeadline) > now && m.isActive;
+    return Number(m.betDeadline) > now && m.isActive;
   });
 
   const closedMarkets = marketsInfo.filter(m => {
     const now = Math.floor(Date.now() / 1000);
-    return Number(m.commitDeadline) <= now;
+    return Number(m.betDeadline) <= now;
   });
 
   const getTimeRemaining = (deadline: bigint) => {
     const now = Math.floor(Date.now() / 1000);
     const diff = Number(deadline) - now;
-    
+
     if (diff <= 0) return 'Closed';
-    
+
     const days = Math.floor(diff / 86400);
     const hours = Math.floor((diff % 86400) / 3600);
-    
+
     if (days > 0) return `${days}d ${hours}h left`;
     return `${hours}h left`;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-dark">
-      {/* Header */}
-      <header className="border-b border-zama-yellow/20 bg-zama-black-light">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-zama rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-zama-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <span className="text-xl font-bold text-zama-yellow">All Markets</span>
-            </div>
-            <div className="flex items-center gap-4">
-              {isOwnerUser && (
-                <Link href="/admin/create" className="btn-zama">
-                  + Create Market
-                </Link>
-              )}
-              {userAddress ? (
-                <div className="status-encrypted text-xs">
-                  {userAddress.slice(0, 6)}...{userAddress.slice(-4)}
-                </div>
-              ) : (
-                <button className="btn-zama-outline" onClick={connectWallet}>
-                  Connect Wallet
-                </button>
-              )}
-            </div>
+    <div className="min-h-screen pb-20">
+      {/* Header Section */}
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold text-ink mb-2 break-words" style={{ fontFamily: 'Marker Felt, Comic Sans MS, sans-serif' }}>
+              <EncryptedText text="Prediction Markets" hoverOnly={false} animateOnView={true} />
+            </h1>
+            <div className="h-2 w-32 bg-marker-yellow rounded-full transform -rotate-1"></div>
           </div>
-        </div>
-      </header>
 
-      {/* Content */}
-      <main className="container mx-auto px-4 py-12 max-w-6xl">
+          <Link href="/create" className="btn-sketch-primary text-center text-sm md:text-base py-3 px-4 md:px-6 w-full md:w-auto">
+            + Create Lottery Round
+          </Link>
+        </div>
+
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-          <div className="stat-box">
-            <div className="stat-value">{marketsInfo.length}</div>
-            <div className="stat-label">Total Markets</div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div className="card-sketch bg-white transform rotate-1">
+            <div className="text-4xl font-bold text-ink mb-1">{marketsInfo.length}</div>
+            <div className="text-gray-500 font-bold">Total Rounds</div>
           </div>
-          <div className="stat-box">
-            <div className="stat-value text-green-400">{activeMarkets.length}</div>
-            <div className="stat-label">Active</div>
+          <div className="card-sketch bg-white transform -rotate-1">
+            <div className="text-4xl font-bold text-green-600 mb-1">{activeMarkets.length}</div>
+            <div className="text-gray-500 font-bold">Active</div>
           </div>
-          <div className="stat-box">
-            <div className="stat-value text-gray-400">{closedMarkets.length}</div>
-            <div className="stat-label">Closed</div>
+          <div className="card-sketch bg-white transform rotate-1">
+            <div className="text-4xl font-bold text-gray-400 mb-1">{closedMarkets.length}</div>
+            <div className="text-gray-500 font-bold">Closed</div>
           </div>
         </div>
 
         {/* Active Markets */}
         {activeMarkets.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-zama-yellow mb-6">
-              🟢 Active Markets
-            </h2>
-            <div className="grid grid-cols-1 gap-4">
-              {activeMarkets.map((market) => (
-                <MarketCard key={market.marketAddress} market={market} timeRemaining={getTimeRemaining(market.commitDeadline)} />
+            <div className="flex items-center gap-3 mb-6">
+              <h2 className="text-2xl font-bold text-ink">
+                <EncryptedText text="Open Rounds" hoverOnly={false} animateOnView={true} />
+              </h2>
+              <span className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {activeMarkets.map((market, i) => (
+                <MarketCard
+                  key={market.marketAddress}
+                  market={market}
+                  timeRemaining={getTimeRemaining(market.betDeadline)}
+                  rotate={i % 2 === 0 ? 1 : -1}
+                />
               ))}
             </div>
           </section>
@@ -156,12 +147,17 @@ export default function MarketsPage() {
         {/* Closed Markets */}
         {closedMarkets.length > 0 && (
           <section>
-            <h2 className="text-2xl font-bold text-gray-400 mb-6">
-              ⏸️ Closed Markets
+            <h2 className="text-2xl font-bold text-gray-500 mb-6">
+              <EncryptedText text="Past Rounds" hoverOnly={false} animateOnView={true} />
             </h2>
-            <div className="grid grid-cols-1 gap-4">
-              {closedMarkets.map((market) => (
-                <MarketCard key={market.marketAddress} market={market} timeRemaining="Closed" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-80">
+              {closedMarkets.map((market, i) => (
+                <MarketCard
+                  key={market.marketAddress}
+                  market={market}
+                  timeRemaining="Closed"
+                  rotate={i % 2 === 0 ? -1 : 1}
+                />
               ))}
             </div>
           </section>
@@ -169,81 +165,72 @@ export default function MarketsPage() {
 
         {/* Empty State */}
         {marketsInfo.length === 0 && (
-          <div className="card-zama text-center py-12">
-            <div className="text-6xl mb-6">📭</div>
-            <h3 className="text-2xl font-bold text-white mb-4">
-              No Markets Yet
+          <div className="card-sketch text-center py-20">
+            <div className="flex justify-center mb-6 opacity-50">
+              <SketchCreate className="w-24 h-24 text-gray-300" />
+            </div>
+            <h3 className="text-2xl font-bold text-ink mb-4">
+              <EncryptedText text="No Rounds Yet" hoverOnly={false} animateOnView={true} />
             </h3>
-            <p className="text-gray-400 mb-6">
-              {isOwnerUser 
-                ? 'Create your first prediction market to get started!'
-                : 'No prediction markets available yet. Check back soon!'}
+            <p className="text-gray-500 mb-8 max-w-md mx-auto">
+              The paper is blank! Wait for new rounds to be created or create one yourself.
             </p>
-            {isOwnerUser && (
-              <Link href="/admin/create" className="btn-zama">
-                Create First Market
-              </Link>
-            )}
+            <Link href="/create" className="btn-sketch-primary">
+              Create First Round
+            </Link>
           </div>
         )}
-      </main>
+      </div>
     </div>
   );
 }
 
-function MarketCard({ market, timeRemaining }: { market: MarketInfo; timeRemaining: string }) {
+function MarketCard({ market, timeRemaining, rotate }: { market: MarketInfo; timeRemaining: string; rotate: number }) {
   const isClosed = timeRemaining === 'Closed';
 
   return (
     <Link href={`/market/${market.marketAddress}`}>
-      <div className="card-zama hover:border-zama-yellow/60 transition-all cursor-pointer group">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-2">
-              {isClosed ? (
-                <span className="phase-badge bg-gray-500/10 border-gray-500 text-gray-400 text-xs">
-                  Closed
-                </span>
-              ) : (
-                <span className="phase-badge phase-commit text-xs">
-                  Active
-                </span>
-              )}
-              <span className="text-xs text-gray-500">
-                {timeRemaining}
-              </span>
-            </div>
-            <h3 className="text-lg font-bold text-white group-hover:text-zama-yellow transition-colors">
-              {market.question}
-            </h3>
+      <div
+        className="card-sketch-hover h-full flex flex-col justify-between group"
+        style={{ transform: `rotate(${rotate}deg)` }}
+      >
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <span className={`badge-sketch ${isClosed ? 'badge-closed' : 'badge-active'}`}>
+              {isClosed ? 'Closed' : 'Active'}
+            </span>
+            <span className="text-xs font-bold text-gray-500 font-mono bg-gray-100 px-2 py-1 rounded">
+              {timeRemaining}
+            </span>
           </div>
-          <svg className="w-6 h-6 text-gray-600 group-hover:text-zama-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+
+          <h3 className="text-xl font-bold text-ink mb-2 group-hover:text-ink-light transition-colors">
+            <EncryptedText text={`Round #${market.roundId.toString()}`} hoverOnly={false} animateOnView={true} />
+          </h3>
+
+          <div className="flex gap-2 mb-4">
+            <span className="badge-sketch bg-blue-100 text-blue-800 text-xs">
+              {market.digits.toString()} Digits
+            </span>
+          </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 text-sm">
-          <div>
-            <p className="text-gray-500">Stake</p>
-            <p className="text-zama-yellow font-bold">
-              {ethers.formatEther(market.stakeAmount)} ETH
-            </p>
-          </div>
-          <div>
-            <p className="text-gray-500">Resolver</p>
-            <p className="text-white font-mono text-xs">
-              {market.resolver.slice(0, 6)}...
-            </p>
-          </div>
-          <div>
-            <p className="text-gray-500">Created</p>
-            <p className="text-white text-xs">
-              {new Date(Number(market.createdAt) * 1000).toLocaleDateString()}
-            </p>
+        <div className="border-t-2 border-dashed border-ink/10 pt-4 mt-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Collateral</p>
+              <p className="text-ink font-bold highlight-marker">
+                {ethers.formatEther(market.collateral)} ETH
+              </p>
+            </div>
+            <div className="w-8 h-8 rounded-full border-2 border-ink flex items-center justify-center group-hover:bg-marker-yellow transition-colors">
+              <svg className="w-4 h-4 text-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
     </Link>
   );
 }
-
