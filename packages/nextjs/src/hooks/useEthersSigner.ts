@@ -4,7 +4,7 @@ import { useWalletClient } from 'wagmi';
 import type { Account, Chain, Client, Transport } from 'viem';
 import { Config, useConnectorClient } from 'wagmi';
 
-export function clientToSigner(client: Client<Transport, Chain, Account>) {
+export function clientToSigner(client: any) {
     const { account, chain, transport } = client;
     if (!chain) return undefined;
     const network = {

@@ -47,7 +47,7 @@ export function usePredictionMarket(
     try {
       const contract = new ethers.Contract(contractAddress, CONTRACT_ABI, provider);
       const info = await contract.getMarketInfo();
-      
+
       setMarketInfo({
         question: info[0],
         stakeAmount: info[1],
@@ -73,7 +73,7 @@ export function usePredictionMarket(
     try {
       const contract = new ethers.Contract(contractAddress, CONTRACT_ABI, provider);
       const info = await contract.getParticipantInfo(userAddress);
-      
+
       setParticipantInfo({
         hasPredicted: info[0],
         canWithdraw: info[1],
@@ -95,16 +95,14 @@ export function usePredictionMarket(
     setError(null);
 
     try {
-      // Initialize FHEVM client if not already done
-      if (!fhevmClient.isInitialized) {
-        await fhevmClient.init();
-      }
+      // Initialize FHEVM client
+      await fhevmClient.init();
 
       // Encrypt the prediction using FHEVM SDK
       console.log('🔒 Encrypting prediction:', predictionValue ? 'YES' : 'NO');
       const encryptedInput = await fhevmClient.encrypt(
-        contractAddress,
-        userAddress,
+        contractAddress as `0x${string}`,
+        userAddress as `0x${string}`,
         { type: 'ebool', value: predictionValue }
       );
 
@@ -158,20 +156,18 @@ export function usePredictionMarket(
       const contract = new ethers.Contract(contractAddress, CONTRACT_ABI, signer);
 
       console.log('🎯 Step 1: Computing encrypted winner flag...');
-      
+
       // Get encrypted winner flag from contract
       const winnerFlagHandle = await contract.computeWinnerFlag(userAddress);
-      
+
       console.log('🔐 Step 2: Decrypting result via SDK...');
-      
-      // Initialize FHEVM client if needed
-      if (!fhevmClient.isInitialized) {
-        await fhevmClient.init();
-      }
+
+      // Initialize FHEVM client
+      await fhevmClient.init();
 
       // Generate keypair for decryption
       const keypair = fhevmClient.generateKeypair();
-      
+
       // Create EIP-712 signature
       const eip712 = fhevmClient.createEIP712(
         keypair.publicKey,
@@ -201,7 +197,7 @@ export function usePredictionMarket(
       );
 
       const isWinner = Boolean(decrypted[winnerFlagHandle]);
-      
+
       console.log('🎲 Result:', isWinner ? 'WINNER! 🎉' : 'Not a winner');
 
       // Claim winner status on-chain
