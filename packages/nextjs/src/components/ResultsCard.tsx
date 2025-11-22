@@ -186,7 +186,7 @@ export function ResultsCard({
               </svg>
               <p className="text-red-400 font-medium">Not a Winner</p>
               <p className="text-sm text-gray-400 mt-1">
-                Your prediction didn't match the outcome. Better luck next time!
+                Your prediction didn&apos;t match the outcome. Better luck next time!
               </p>
             </div>
           )}

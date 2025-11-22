@@ -212,6 +212,9 @@ function MarketCard({ market, timeRemaining, rotate }: { market: MarketInfo; tim
             <span className="badge-sketch bg-blue-100 text-blue-800 text-xs">
               {market.digits.toString()} Digits
             </span>
+            <span className="badge-sketch bg-purple-100 text-purple-800 text-xs">
+              Fee: {(Number(market.feePercent) / 100).toFixed(2)}%
+            </span>
           </div>
         </div>
 

@@ -440,7 +440,7 @@ export default function DashboardPage() {
                                     <div className="flex justify-center mb-6 opacity-50">
                                         <SketchCreate className="w-24 h-24 text-gray-300" />
                                     </div>
-                                    <p className="text-gray-500 font-bold mb-4">You haven't created any markets yet.</p>
+                                    <p className="text-gray-500 font-bold mb-4">You haven&apos;t created any markets yet.</p>
                                     <Link href="/create" className="btn-sketch-primary">
                                         Create Your First Market
                                     </Link>

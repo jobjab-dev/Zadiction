@@ -96,6 +96,7 @@ export default function MarketPage() {
             <span>Digits: {state.digits}</span>
             <span>Collateral: {ethers.formatEther(state.collateral)} ETH</span>
             <span>Limit: {ethers.formatEther(state.liabilityLimit)} ETH</span>
+            <span>Fee: {(Number(state.feePercent) / 100).toFixed(2)}%</span>
           </div>
         </div>
         <div className="text-right">
@@ -279,6 +280,6 @@ export default function MarketPage() {
           </table>
         </div>
       </div>
-    </main>
+    </main >
   );
 }

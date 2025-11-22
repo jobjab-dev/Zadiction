@@ -63,7 +63,7 @@ export default function HowItWorksPage() {
               <EncryptedText text="100% Solvent" hoverOnly={false} animateOnView={true} />
             </h3>
             <p className="text-gray-600 text-sm leading-relaxed">
-              The system never accepts a bet it can't pay out. Guaranteed!
+              The system never accepts a bet it can&apos;t pay out. Guaranteed!
             </p>
             <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-200 rounded-full transform rotate-12 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           </div>
@@ -194,7 +194,7 @@ export default function HowItWorksPage() {
             {/* Formula */}
             <div className="bg-white p-6 rounded-sketch-sm border-2 border-ink/10 font-mono text-sm md:text-base mb-6 overflow-x-auto">
               <p className="text-gray-500 mb-2">
-                // Odds Formula
+                {/* // Odds Formula */}
               </p>
               <p className="text-ink font-bold text-lg">
                 Odds = Max(MinOdds, InitialOdds × (1 - Exposure ÷ Limit))
@@ -234,11 +234,51 @@ export default function HowItWorksPage() {
                     <EncryptedText text="Result" hoverOnly={false} animateOnView={true} />
                   </h4>
                   <p className="text-gray-600 text-sm">
-                    More bets on "77" → Higher Exposure → Lower Odds → Pool stays solvent!
+                    More bets on &quot;77&quot; → Higher Exposure → Lower Odds → Pool stays solvent!
                   </p>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Fees Section */}
+      <section className="mb-16">
+        <h2 className="text-3xl font-bold text-ink mb-8 text-center transform rotate-1 flex items-center justify-center gap-3">
+          <SketchMoneyBag className="w-8 h-8 text-ink" />
+          <EncryptedText text="Fee Structure" hoverOnly={false} animateOnView={true} />
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Creator Fee */}
+          <div className="card-sketch bg-white p-6 hover:shadow-sketch-hover transition-all duration-300">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 bg-purple-100 rounded-full border-2 border-ink">
+                <SketchCreate className="w-8 h-8 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-bold text-ink">
+                <EncryptedText text="Creator Fee" hoverOnly={false} animateOnView={true} />
+              </h3>
+            </div>
+            <p className="text-gray-600 leading-relaxed">
+              Market creators set a custom fee (e.g., 1-5%) to earn rewards for managing their pools. This incentivizes the creation of diverse and exciting markets!
+            </p>
+          </div>
+
+          {/* Protocol Fee */}
+          <div className="card-sketch bg-white p-6 hover:shadow-sketch-hover transition-all duration-300">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 bg-blue-100 rounded-full border-2 border-ink">
+                <SketchShield className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold text-ink">
+                <EncryptedText text="Protocol Fee" hoverOnly={false} animateOnView={true} />
+              </h3>
+            </div>
+            <p className="text-gray-600 leading-relaxed">
+              A small fixed fee of <strong>0.25%</strong> is collected by the protocol to support platform maintenance, security audits, and future development.
+            </p>
           </div>
         </div>
       </section>

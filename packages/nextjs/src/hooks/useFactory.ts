@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
 import { FACTORY_ABI } from '@/contracts/factoryABI';
+import { MARKET_ABI } from '@/contracts/contractABIs';
 
 /**
  * Hook for interacting with LotteryFactory
@@ -15,6 +16,7 @@ export interface MarketInfo {
   createdAt: bigint;
   isActive: boolean;
   isResolved: boolean;
+  feePercent: bigint;
 }
 
 export function useFactory(
@@ -54,6 +56,16 @@ export function useFactory(
       const infos: MarketInfo[] = [];
       for (const marketAddr of allMarkets) {
         const info = await contract.getMarketInfo(marketAddr);
+
+        // Fetch fee from market contract
+        let feePercent = BigInt(0);
+        try {
+          const marketContract = new ethers.Contract(marketAddr, MARKET_ABI, providerOrSigner);
+          feePercent = await marketContract.feePercent();
+        } catch (e) {
+          console.error(`Error fetching fee for ${marketAddr}`, e);
+        }
+
         infos.push({
           marketAddress: info[0],
           roundId: info[1],
@@ -63,6 +75,7 @@ export function useFactory(
           createdAt: info[5],
           isActive: info[6],
           isResolved: info[7],
+          feePercent: feePercent,
         });
       }
       // Sort by newest first
@@ -93,7 +106,7 @@ export function useFactory(
     try {
       let signer;
       if ('getSigner' in providerOrSigner) {
-        signer = await providerOrSigner.getSigner();
+        signer = await (providerOrSigner as any).getSigner();
       } else {
         signer = providerOrSigner;
       }
