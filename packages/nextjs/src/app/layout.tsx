@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   title: 'Zadiction | Confidential Prediction Market',
   description: 'A fully encrypted prediction market built with Zama FHEVM - where your predictions remain private until resolution',
   keywords: ['FHEVM', 'Zama', 'Prediction Market', 'Confidential', 'Encryption', 'Web3'],
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png' },
+    ],
+  },
+  manifest: '/site.webmanifest',
 };
 
 export default function RootLayout({
