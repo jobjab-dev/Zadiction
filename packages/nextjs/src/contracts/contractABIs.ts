@@ -6,7 +6,7 @@
  * 
  * To regenerate: pnpm --filter ./packages/hardhat export:abis
  * 
- * Generated: 2025-11-22T18:33:55.128Z
+ * Generated: 2025-11-23T05:57:46.937Z
  */
 
 // ============================================
@@ -593,6 +593,32 @@ export const MARKET_ABI = [
   },
   {
     "inputs": [],
+    "name": "accumulatedCreatorFees",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "accumulatedProtocolFees",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "betDeadline",
     "outputs": [
       {
@@ -971,6 +997,32 @@ export const MARKET_ABI = [
     "name": "placeBet",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "protocolFeePercent",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "protocolTreasuryAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

@@ -2,8 +2,13 @@
 
 > A transparent, linear-capped lottery AMM with dynamic odds and secure on-chain RNG powered by Zama FHEVM.
 
-[![Zama FHEVM](https://img.shields.io/badge/Zama-FHEVM%20v0.9-yellow)](https://docs.zama.ai/fhevm)
+[![Zama FHEVM](https://img.shields.io/badge/Zama-FHEVM%20v0.7-yellow)](https://docs.zama.ai/fhevm)
 [![License](https://img.shields.io/badge/license-BSD--3--Clause--Clear-blue.svg)](LICENSE)
+
+## 🎥 Demo
+
+- **Live Site**: [zadiction-nextjs.vercel.app](https://zadiction-nextjs.vercel.app)
+- **Video Demo**: [Watch on YouTube](https://youtu.be/y68FSsosz5M)
 
 ## 🎯 Overview
 

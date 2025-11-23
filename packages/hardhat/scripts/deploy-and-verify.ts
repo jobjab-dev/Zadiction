@@ -41,6 +41,28 @@ async function main() {
   console.log("✅ Confirmed!\n");
 
   // ========================================
+  // Step 1.5: Configure Protocol Treasury
+  // ========================================
+  const envTreasury = process.env.PROTOCOL_TREASURY;
+  if (envTreasury && ethers.isAddress(envTreasury)) {
+    if (envTreasury.toLowerCase() !== deployer.address.toLowerCase()) {
+      console.log(`\n⚙️ Configuring Protocol Treasury to: ${envTreasury}`);
+      try {
+        const tx = await factory.setProtocolTreasury(envTreasury);
+        console.log("⏳ Waiting for confirmation...");
+        await tx.wait();
+        console.log("✅ Protocol Treasury updated!");
+      } catch (error: any) {
+        console.error("❌ Failed to update Protocol Treasury:", error.message);
+      }
+    } else {
+      console.log("\nℹ️ Protocol Treasury is same as deployer (default)");
+    }
+  } else if (envTreasury) {
+    console.warn(`\n⚠️ Invalid PROTOCOL_TREASURY address in .env: ${envTreasury}`);
+  }
+
+  // ========================================
   // Step 2: Verify on Etherscan
   // ========================================
   console.log("🔍 Step 2: Verifying contract on Etherscan...");

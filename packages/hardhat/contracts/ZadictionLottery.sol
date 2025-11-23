@@ -32,7 +32,13 @@ contract ZadictionLottery is DecryptionOracleCaller, ReentrancyGuard {
     uint256 public immutable liabilityLimit; // L = C * (1 - fee)
     uint256 public immutable initialOdds; // o0 (scaled by 100, e.g. 7000 = 70x)
     uint256 public immutable minOdds; // omin (scaled by 100)
-    uint256 public immutable feePercent; // basis points (e.g. 500 = 5%)
+    uint256 public immutable feePercent; // Creator fee basis points (e.g. 500 = 5%)
+    uint256 public immutable protocolFeePercent; // Protocol fee basis points
+    address public immutable protocolTreasuryAddress;
+    
+    // Fee Tracking
+    uint256 public accumulatedCreatorFees;
+    uint256 public accumulatedProtocolFees;
     
     // State
     mapping(uint256 => uint256) public exposure; // E_i for each number
@@ -132,27 +138,11 @@ contract ZadictionLottery is DecryptionOracleCaller, ReentrancyGuard {
         initialOdds = _initialOdds;
         minOdds = _minOdds;
         feePercent = _creatorFeePercent;
+        protocolFeePercent = _protocolFeePercent;
+        protocolTreasuryAddress = _protocolTreasury;
         
         collateral = msg.value;
-        
-        // Calculate Fees
-        uint256 creatorFee = (msg.value * _creatorFeePercent) / 10000;
-        uint256 protocolFee = (msg.value * _protocolFeePercent) / 10000;
-        uint256 totalFee = creatorFee + protocolFee;
-        
-        liabilityLimit = msg.value - totalFee;
-        
-        // Transfer creator fee
-        if (_owner != address(0) && creatorFee > 0) {
-            (bool sent1, ) = payable(_owner).call{value: creatorFee}("");
-            require(sent1, "Creator fee transfer failed");
-        }
-        
-        // Transfer protocol fee
-        if (_protocolTreasury != address(0) && protocolFee > 0) {
-            (bool sent2, ) = payable(_protocolTreasury).call{value: protocolFee}("");
-            require(sent2, "Protocol fee transfer failed");
-        }
+        liabilityLimit = msg.value; // Full collateral is available for liability
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -218,24 +208,42 @@ contract ZadictionLottery is DecryptionOracleCaller, ReentrancyGuard {
         if (number > maxNumber) revert InvalidNumber();
         if (msg.value == 0) revert TransferFailed();
 
-        // 1. Calculate Final Odds (Slippage-Aware)
-        uint256 lockedOdds = getOdds(number, msg.value);
-        uint256 payout = (msg.value * lockedOdds) / 100;
+        // 1. Calculate Fees
+        uint256 creatorFee = (msg.value * feePercent) / 10000;
+        uint256 protocolFee = (msg.value * protocolFeePercent) / 10000;
+        uint256 netAmount = msg.value - creatorFee - protocolFee;
+
+        // 2. Distribute Fees
+        if (creatorFee > 0) {
+            accumulatedCreatorFees += creatorFee;
+            (bool sentCreator, ) = payable(owner).call{value: creatorFee}("");
+            require(sentCreator, "Creator fee transfer failed");
+        }
+
+        if (protocolFee > 0) {
+            accumulatedProtocolFees += protocolFee;
+            (bool sentProtocol, ) = payable(protocolTreasuryAddress).call{value: protocolFee}("");
+            require(sentProtocol, "Protocol fee transfer failed");
+        }
+
+        // 3. Calculate Final Odds (Slippage-Aware) using Net Amount
+        uint256 lockedOdds = getOdds(number, netAmount);
+        uint256 payout = (netAmount * lockedOdds) / 100;
         
-        // 2. Solvency Check: E_i + payout <= L
+        // 4. Solvency Check: E_i + payout <= L
         if (exposure[number] + payout > liabilityLimit) {
             revert ExceedsLimit();
         }
 
-        // 3. Update State
+        // 5. Update State
         exposure[number] += payout;
-        totalStakes[number] += msg.value;
+        totalStakes[number] += netAmount;
         totalUnclaimedPayouts += payout; // Track liability
         
         bets.push(Bet({
             player: msg.sender,
             number: number,
-            amount: msg.value,
+            amount: netAmount, // Record net amount
             lockedOdds: lockedOdds,
             potentialPayout: payout,
             claimed: false
@@ -243,7 +251,7 @@ contract ZadictionLottery is DecryptionOracleCaller, ReentrancyGuard {
         
         userBetIndices[msg.sender].push(bets.length - 1);
         
-        emit BetPlaced(msg.sender, number, msg.value, lockedOdds, payout);
+        emit BetPlaced(msg.sender, number, netAmount, lockedOdds, payout);
     }
 
     /**
