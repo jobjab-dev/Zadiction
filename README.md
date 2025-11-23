@@ -154,6 +154,41 @@ Winners call `claimWinnings()`.
 
 BSD-3-Clause-Clear
 
+## 🧪 Testing
+
+The project includes a comprehensive test suite covering the AMM logic, solvency checks, and end-to-end game flow (using a Mock contract to simulate FHE).
+
+To run the tests:
+
+```bash
+pnpm contracts:test
+```
+
+This will execute the Hardhat tests in `packages/hardhat/test`.
+
+### ✅ Verification Report
+
+```bash
+  ZadictionLottery
+    Deployment
+      ✔ Should set the correct owner and parameters
+      ✔ Should have correct initial balance
+    Betting Logic (AMM)
+      ✔ Should allow placing a bet and update exposure
+      ✔ Should decrease odds as exposure increases (Slippage)
+      ✔ Should revert if bet exceeds liability limit (Solvency)
+      ✔ Should distribute fees correctly
+    Withdrawal
+      ✔ Should not allow withdrawal before round ends
+    Game Flow (End-to-End with Mock)
+      ✔ Should allow full game flow: Bet -> Resolve -> Claim
+      ✔ Should allow owner to withdraw remaining collateral
+      ✔ Should revert if betting after deadline
+      ✔ Should revert if claiming twice
+
+  11 passing (1s)
+```
+
 ---
 
 **Built with ❤️ for Zama Community**
